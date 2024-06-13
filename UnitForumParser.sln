@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitForumParser", "UnitForumParser\UnitForumParser.csproj", "{E29F7CF3-2E06-43EA-B724-E54E85D5D942}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules", "Modules\Modules.csproj", "{819FAF7C-BDA4-4865-A6FC-ABCA78E4A0D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{ADF3EDA8-D0C9-4B0E-9BB6-22C7CBB6BFE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E29F7CF3-2E06-43EA-B724-E54E85D5D942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E29F7CF3-2E06-43EA-B724-E54E85D5D942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E29F7CF3-2E06-43EA-B724-E54E85D5D942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E29F7CF3-2E06-43EA-B724-E54E85D5D942}.Release|Any CPU.Build.0 = Release|Any CPU
+		{819FAF7C-BDA4-4865-A6FC-ABCA78E4A0D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819FAF7C-BDA4-4865-A6FC-ABCA78E4A0D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{819FAF7C-BDA4-4865-A6FC-ABCA78E4A0D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{819FAF7C-BDA4-4865-A6FC-ABCA78E4A0D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF3EDA8-D0C9-4B0E-9BB6-22C7CBB6BFE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF3EDA8-D0C9-4B0E-9BB6-22C7CBB6BFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF3EDA8-D0C9-4B0E-9BB6-22C7CBB6BFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF3EDA8-D0C9-4B0E-9BB6-22C7CBB6BFE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
