@@ -34,7 +34,7 @@ async Task RegisterGlobalCommands()
         new()
         {
             Name = "find",
-            Description = "Знайти...", 
+            Description = "Знайти інмормацію на форумі", 
             Options = 
             [
                 new SlashCommandOptionBuilder
@@ -91,6 +91,48 @@ async Task RegisterGlobalCommands()
                             Description = "Нікнейм гравця (або його частина)",
                             IsRequired = true
                         }, 
+                        new SlashCommandOptionBuilder
+                        {
+                            Name = "server", 
+                            Type = ApplicationCommandOptionType.Number,
+                            Description = "Номер серверу",
+                            IsRequired = true,
+                            Choices = ChoiceConstants.Servers
+                        }
+                    ]
+                }
+            ]
+        },
+        new()
+        {
+            Name = "top",
+            Description = "Топ гравців", 
+            Options = 
+            [
+                new SlashCommandOptionBuilder
+                {
+                    Name = "intruder",
+                    Type = ApplicationCommandOptionType.SubCommand,
+                    Description = "Показати топ форумних губок", 
+                    Options = 
+                    [
+                        new SlashCommandOptionBuilder
+                        {
+                            Name = "server", 
+                            Type = ApplicationCommandOptionType.Number,
+                            Description = "Номер серверу",
+                            IsRequired = true,
+                            Choices = ChoiceConstants.Servers
+                        }
+                    ]
+                },
+                new SlashCommandOptionBuilder
+                {
+                    Name = "victim",
+                    Type = ApplicationCommandOptionType.SubCommand,
+                    Description = "Показати топ форумних бійців", 
+                    Options = 
+                    [
                         new SlashCommandOptionBuilder
                         {
                             Name = "server", 
