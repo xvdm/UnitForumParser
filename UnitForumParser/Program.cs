@@ -2,8 +2,8 @@
 using Discord.Net;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using Modules;
 using Modules.Constants;
+using Modules.Handlers;
 using Newtonsoft.Json;
 
 var builder = new ConfigurationBuilder()
