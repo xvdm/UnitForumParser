@@ -2,6 +2,7 @@ using Discord.WebSocket;
 using Modules.Handlers.Find;
 using Modules.Handlers.Ping;
 using Modules.Handlers.Top;
+using Services.Repositories;
 
 namespace Modules.Handlers;
 
@@ -9,11 +10,13 @@ public class SlashCommandHandler
 {
     private readonly DiscordSocketClient _client;
     private readonly DateTime _startTime;
+    private readonly LogsRepository _logsRepository;
     
     public SlashCommandHandler(DiscordSocketClient client)
     {
         _client = client;
         _startTime = DateTime.UtcNow;
+        _logsRepository = new LogsRepository();
     }
     
     public async Task HandleCommand(SocketSlashCommand command)
@@ -39,5 +42,14 @@ public class SlashCommandHandler
                 break;
             }
         }
+
+        await LogCommand(command);
+    }
+
+    private async Task LogCommand(SocketSlashCommand command)
+    {
+        await _logsRepository.LogDataAboutChannelOrGuildAsync(command);
+        
+        // todo: log command and options (probably in specific handlers)
     }
 }
