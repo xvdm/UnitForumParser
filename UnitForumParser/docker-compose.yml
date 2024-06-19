@@ -1,0 +1,25 @@
+version: '3.8'
+
+networks:
+  unitforumparsernetwork:
+    name: unitforumparsernetwork
+
+volumes:
+  UnitForumParser_volume:
+    external: true
+
+services:
+  database:
+    container_name: postgres
+    image: postgres
+    restart: always
+    volumes:
+      - UnitForumParser_volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=UnitForumParser
+    ports:
+      - "15432:5432"
+    networks:
+      - unitforumparsernetwork
