@@ -29,20 +29,37 @@ public class SlashCommandHandler
                 await handler.HandlePingCommand(command);
                 break;   
             }
-            case "find":
+            case "find-static":
             {
                 var handler = new FindCommandHandler();
-                await handler.HandleFindCommand(command);
+                await handler.HandleFindStaticCommand(command);
                 break;   
             }
-            case "top":
+            case "find-forum":
+            {
+                var handler = new FindCommandHandler();
+                await handler.HandleFindForumCommand(command);
+                break;   
+            }
+            case "find-nickname":
+            {
+                var handler = new FindCommandHandler();
+                await handler.HandleFindNicknameCommand(command);
+                break;   
+            }
+            case "top-intruder":
             {
                 var handler = new TopCommandHandler();
-                await handler.HandleTopCommand(command);
+                await handler.HandleTopIntruderCommand(command);
+                break;
+            }
+            case "top-victim":
+            {
+                var handler = new TopCommandHandler();
+                await handler.HandleTopVictimCommand(command);
                 break;
             }
         }
-
         await LogCommand(command);
     }
 

@@ -6,23 +6,9 @@ namespace Modules.Handlers.Top;
 
 public sealed class TopCommandHandler
 {
-    public async Task HandleTopCommand(SocketSlashCommand command)
+    public async Task HandleTopIntruderCommand(SocketSlashCommand command)
     {
-        var fieldName = command.Data.Options.First().Name;
-        switch(fieldName)
-        {
-            case "intruder":
-                await HandleTopIntruderCommand(command);
-                break;
-            case "victim":
-                await HandleTopVictimCommand(command);
-                break;
-        }
-    }
-    
-    private async Task HandleTopIntruderCommand(SocketSlashCommand command)
-    {
-        var server = command.Data.Options.First().Options.First(x => x.Name == "server").Value;
+        var server = command.Data.Options.First(x => x.Name == "server").Value;
 
         var description = "**1 місце - еммерсон - 228 скарг**";
         
@@ -35,9 +21,9 @@ public sealed class TopCommandHandler
         await command.RespondAsync(embed: embedBuilder.Build());
     }
     
-    private async Task HandleTopVictimCommand(SocketSlashCommand command)
+    public async Task HandleTopVictimCommand(SocketSlashCommand command)
     {
-        var server = command.Data.Options.First().Options.First(x => x.Name == "server").Value;
+        var server = command.Data.Options.First(x => x.Name == "server").Value;
 
         var description = "**1 місце - еммерсон - 1337 скарг**";
         

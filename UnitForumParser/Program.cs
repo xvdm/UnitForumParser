@@ -36,115 +36,94 @@ async Task RegisterGlobalCommands()
         },
         new()
         {
-            Name = "find",
-            Description = "Знайти інмормацію на форумі", 
+            Name = "find-static",
+            Description = "Знайти скарги по статику", 
             Options = 
             [
                 new SlashCommandOptionBuilder
                 {
-                    Name = "static",
-                    Type = ApplicationCommandOptionType.SubCommand,
-                    Description = "Знайти скарги по статику", 
-                    Options = 
-                    [
-                        new SlashCommandOptionBuilder
-                        {
-                            Name = "static", 
-                            Type = ApplicationCommandOptionType.Number,
-                            Description = "Статичний id гравця",
-                            IsRequired = true
-                        }, 
-                        new SlashCommandOptionBuilder
-                        {
-                            Name = "server", 
-                            Type = ApplicationCommandOptionType.Number,
-                            Description = "Номер серверу",
-                            IsRequired = true,
-                            Choices = ChoiceConstants.Servers
-                        }
-                    ]
-                },
+                    Name = "static", 
+                    Type = ApplicationCommandOptionType.Number,
+                    Description = "Статичний id гравця",
+                    IsRequired = true
+                }, 
                 new SlashCommandOptionBuilder
                 {
-                    Name = "forum",
-                    Type = ApplicationCommandOptionType.SubCommand,
-                    Description = "Знайти скарги гравця на форумі", 
-                    Options = 
-                    [
-                        new SlashCommandOptionBuilder
-                        {
-                            Name = "forum-id", 
-                            Type = ApplicationCommandOptionType.Number,
-                            Description = "Id користувача на форумі",
-                            IsRequired = true
-                        }
-                    ]
-                },
-                new SlashCommandOptionBuilder
-                {
-                    Name = "nickname",
-                    Type = ApplicationCommandOptionType.SubCommand,
-                    Description = "Знайти скарги по нікнейму", 
-                    Options = 
-                    [
-                        new SlashCommandOptionBuilder
-                        {
-                            Name = "nickname", 
-                            Type = ApplicationCommandOptionType.String,
-                            Description = "Нікнейм гравця (або його частина)",
-                            IsRequired = true
-                        }, 
-                        new SlashCommandOptionBuilder
-                        {
-                            Name = "server", 
-                            Type = ApplicationCommandOptionType.Number,
-                            Description = "Номер серверу",
-                            IsRequired = true,
-                            Choices = ChoiceConstants.Servers
-                        }
-                    ]
+                    Name = "server", 
+                    Type = ApplicationCommandOptionType.Number,
+                    Description = "Номер серверу",
+                    IsRequired = true,
+                    Choices = ChoiceConstants.Servers
                 }
             ]
         },
         new()
         {
-            Name = "top",
-            Description = "Топ гравців", 
+            Name = "find-forum",
+            Description = "Знайти скарги гравця на форумі", 
             Options = 
             [
                 new SlashCommandOptionBuilder
                 {
-                    Name = "intruder",
-                    Type = ApplicationCommandOptionType.SubCommand,
-                    Description = "Показати топ форумних губок", 
-                    Options = 
-                    [
-                        new SlashCommandOptionBuilder
-                        {
-                            Name = "server", 
-                            Type = ApplicationCommandOptionType.Number,
-                            Description = "Номер серверу",
-                            IsRequired = true,
-                            Choices = ChoiceConstants.Servers
-                        }
-                    ]
-                },
+                    Name = "id", 
+                    Type = ApplicationCommandOptionType.Number,
+                    Description = "Id користувача на форумі",
+                    IsRequired = true
+                }
+            ]
+        },
+        new()
+        {
+            Name = "find-nickname",
+            Description = "Знайти скарги по нікнейму", 
+            Options = 
+            [
                 new SlashCommandOptionBuilder
                 {
-                    Name = "victim",
-                    Type = ApplicationCommandOptionType.SubCommand,
-                    Description = "Показати топ форумних бійців", 
-                    Options = 
-                    [
-                        new SlashCommandOptionBuilder
-                        {
-                            Name = "server", 
-                            Type = ApplicationCommandOptionType.Number,
-                            Description = "Номер серверу",
-                            IsRequired = true,
-                            Choices = ChoiceConstants.Servers
-                        }
-                    ]
+                    Name = "nickname", 
+                    Type = ApplicationCommandOptionType.String,
+                    Description = "Нікнейм гравця (або його частина)",
+                    IsRequired = true
+                }, 
+                new SlashCommandOptionBuilder
+                {
+                    Name = "server", 
+                    Type = ApplicationCommandOptionType.Number,
+                    Description = "Номер серверу",
+                    IsRequired = true,
+                    Choices = ChoiceConstants.Servers
+                }
+            ]
+        },
+        new()
+        {
+            Name = "top-intruder",
+            Description = "Показати топ форумних губок", 
+            Options = 
+            [
+                new SlashCommandOptionBuilder
+                {
+                    Name = "server", 
+                    Type = ApplicationCommandOptionType.Number,
+                    Description = "Номер серверу",
+                    IsRequired = true,
+                    Choices = ChoiceConstants.Servers
+                }
+            ]
+        },
+        new()
+        {
+            Name = "top-victim",
+            Description = "Показати топ форумних бійців", 
+            Options = 
+            [
+                new SlashCommandOptionBuilder
+                {
+                    Name = "server", 
+                    Type = ApplicationCommandOptionType.Number,
+                    Description = "Номер серверу",
+                    IsRequired = true,
+                    Choices = ChoiceConstants.Servers
                 }
             ]
         }

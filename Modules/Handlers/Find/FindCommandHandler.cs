@@ -6,27 +6,10 @@ namespace Modules.Handlers.Find;
 
 public sealed class FindCommandHandler
 {
-    public async Task HandleFindCommand(SocketSlashCommand command)
+    public async Task HandleFindStaticCommand(SocketSlashCommand command)
     {
-        var fieldName = command.Data.Options.First().Name;
-        switch(fieldName)
-        {
-            case "static":
-                await HandleFindByStaticCommand(command);
-                break;
-            case "forum":
-                await HandleFindByForumCommand(command);
-                break;
-            case "nickname":
-                await HandleFindByNicknameCommand(command);
-                break;
-        }
-    }
-    
-    private async Task HandleFindByStaticCommand(SocketSlashCommand command)
-    {
-        var staticId = command.Data.Options.First().Options.First(x => x.Name == "static").Value;
-        var server = command.Data.Options.First().Options.First(x => x.Name == "server").Value;
+        var staticId = command.Data.Options.First(x => x.Name == "static").Value;
+        var server = command.Data.Options.First(x => x.Name == "server").Value;
 
         var description = $"**Static ID**: ```{staticId}```" +
                           $"**Сервер**: ```{server}```";
@@ -40,9 +23,9 @@ public sealed class FindCommandHandler
         await command.RespondAsync(embed: embedBuilder.Build());
     }
     
-    private async Task HandleFindByForumCommand(SocketSlashCommand command)
+    public async Task HandleFindForumCommand(SocketSlashCommand command)
     {
-        var forumId = command.Data.Options.First().Options.First(x => x.Name == "forum-id").Value;
+        var forumId = command.Data.Options.First(x => x.Name == "id").Value;
 
         var description = $"**Forum ID**: ```{forumId}```";
         
@@ -55,10 +38,10 @@ public sealed class FindCommandHandler
         await command.RespondAsync(embed: embedBuilder.Build());
     }
     
-    private async Task HandleFindByNicknameCommand(SocketSlashCommand command)
+    public async Task HandleFindNicknameCommand(SocketSlashCommand command)
     {
-        var nickname = command.Data.Options.First().Options.First(x => x.Name == "nickname").Value;
-        var server = command.Data.Options.First().Options.First(x => x.Name == "server").Value;
+        var nickname = command.Data.Options.First(x => x.Name == "nickname").Value;
+        var server = command.Data.Options.First(x => x.Name == "server").Value;
 
         var description = $"**Нікнейм**: ```{nickname}```" +
                           $"**Сервер**: ```{server}```";
