@@ -19,9 +19,4 @@ public sealed class LogGuildUser
     /// When user joined guild
     /// </summary>
     public DateTimeOffset? JoinedAt { get; set; }
-    
-    /// <summary>
-    /// Shows if user is still in Guild (didn't leave it)
-    /// </summary>
-    public bool IsActive { get; set; }
 }

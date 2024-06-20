@@ -84,7 +84,6 @@ public sealed class LogsRepository
                 LogUserId = x.Id,
                 LogGuildId = guildFromCommand.Id,
                 GuildNickname = x.Nickname,
-                IsActive = true,
                 JoinedAt = x.JoinedAt?.UtcDateTime
             })
             .ToList();
@@ -144,7 +143,7 @@ public sealed class LogsRepository
                 AvatarUrl = x.GetDisplayAvatarUrl()
             })
             .ToList();
-
+        
         var guildUsersFromCommand = socketGuildChannel!.Guild.Users
             .Select(x => new LogGuildUser
             {
@@ -152,7 +151,6 @@ public sealed class LogsRepository
                 LogUserId = x.Id,
                 LogGuildId = guildFromCommand.Id,
                 GuildNickname = x.Nickname,
-                IsActive = true,
                 JoinedAt = x.JoinedAt
             })
             .ToList();
@@ -239,18 +237,9 @@ public sealed class LogsRepository
             }
             else
             {
-                userFromDatabase.IsActive = true;
                 userFromDatabase.GuildNickname = guildUserFromCommand.GuildNickname;
                 userFromDatabase.JoinedAt = guildUserFromCommand.JoinedAt;
             }
-        }
-
-        var notActiveGuildUsers = guildUsersFromDatabase
-            .Where(x => guildUsersFromCommand.Any(y => y.LogUserId == x.LogUserId) == false)
-            .ToList();
-        foreach (var notActiveGuildUser in notActiveGuildUsers)
-        {
-            notActiveGuildUser.IsActive = false;
         }
 
         guildFromDatabase.Name = guildFromCommand.Name;

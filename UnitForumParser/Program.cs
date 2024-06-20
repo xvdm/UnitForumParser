@@ -11,7 +11,10 @@ var builder = new ConfigurationBuilder()
 var config = builder.Build();
 var token = config["DiscordBot:Token"];
 
-var client = new DiscordSocketClient();
+var socketConfig = new DiscordSocketConfig
+{
+};
+var client = new DiscordSocketClient(socketConfig);
 var commandHandler = new SlashCommandHandler(client);
 client.Log += Log;
 client.Ready += RegisterGlobalCommands;
