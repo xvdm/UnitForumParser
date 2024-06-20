@@ -2,6 +2,7 @@ using Discord.WebSocket;
 using Modules.Handlers.Find;
 using Modules.Handlers.Ping;
 using Modules.Handlers.Top;
+using Services;
 using Services.Repositories;
 
 namespace Modules.Handlers;
@@ -65,8 +66,11 @@ public class SlashCommandHandler
 
     private async Task LogCommand(SocketSlashCommand command)
     {
-        await _logsRepository.LogDataAboutChannelOrGuildAsync(command);
-        
-        // todo: log command and options (probably in specific handlers)
+        // if the interaction is a REST ping interaction.
+        if (command.ChannelId is null) return;
+
+        using var context = new ApplicationDbContext();
+        await _logsRepository.LogDataAboutChannelOrGuildAsync(context, command);
+        await _logsRepository.LogDataAboutCommandAsync(context, command);
     }
 }

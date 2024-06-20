@@ -7,13 +7,34 @@ namespace Services.Repositories;
 
 public sealed class LogsRepository
 {
-    public async Task LogDataAboutChannelOrGuildAsync(SocketSlashCommand command)
+    public async Task LogDataAboutCommandAsync(ApplicationDbContext context, SocketSlashCommand command)
     {
-        // if the interaction is a REST ping interaction.
-        if (command.ChannelId is null) return;
+        var logCommand = new LogCommand
+        {
+            Id = Guid.NewGuid(),
+            LogChannelId = command.Channel.Id,
+            LogUserId = command.User.Id,
+            Name = command.Data.Name
+        };
+        context.LogCommands.Add(logCommand);
 
-        using var context = new ApplicationDbContext();
-
+        foreach (var option in command.Data.Options)
+        {
+            var logCommandOption = new LogCommandOption
+            {
+                Id = Guid.NewGuid(),
+                Name = option.Name,
+                Value = option.Value?.ToString(),
+                LogCommandId = logCommand.Id
+            };
+            context.LogCommandOptions.Add(logCommandOption);
+        }
+        
+        await context.SaveChangesAsync();
+    }
+    
+    public async Task LogDataAboutChannelOrGuildAsync(ApplicationDbContext context, SocketSlashCommand command)
+    {
         if (command is { Channel: SocketGuildChannel, GuildId: not null })
         {
             // if it is guild: log user, channel and guild

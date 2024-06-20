@@ -11,6 +11,7 @@ public sealed class ApplicationDbContext : DbContext
     
     public DbSet<LogChannel> LogChannels { get; set; }
     public DbSet<LogCommand> LogCommands { get; set; }
+    public DbSet<LogCommandOption> LogCommandOptions { get; set; }
     public DbSet<LogGuild> LogGuilds { get; set; }
     public DbSet<LogUser> LogUsers { get; set; }
     public DbSet<LogGuildUser> LogGuildUsers { get; set; }
