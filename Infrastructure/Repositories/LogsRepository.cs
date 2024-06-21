@@ -199,10 +199,9 @@ public sealed class LogsRepository
             oldUser.AvatarUrl = userFromCommand.AvatarUrl;
         }
         
-        // users from current guild in database
-        var usersIdsFromDatabase = await context.LogGuildUsers
-            .Where(x => x.LogGuildId == guildFromCommand.Id)
-            .Select(x => x.LogUserId)
+        // all users in database
+        var usersIdsFromDatabase = await context.LogUsers
+            .Select(x => x.Id)
             .ToListAsync();
 
         var newUsers = usersFromCommand
