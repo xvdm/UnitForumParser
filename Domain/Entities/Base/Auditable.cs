@@ -1,4 +1,4 @@
-namespace Services.Entities.Base;
+namespace Domain.Entities.Base;
 
 public abstract class Auditable
 {

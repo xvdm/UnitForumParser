@@ -1,7 +1,7 @@
 using Discord;
 using Discord.WebSocket;
+using Domain.Entities.Logs;
 using Microsoft.EntityFrameworkCore;
-using Services.Entities.Logs;
 
 namespace Services.Repositories;
 

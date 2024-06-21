@@ -1,4 +1,4 @@
-namespace Services.Entities.Logs;
+namespace Domain.Entities.Logs;
 
 /// <summary>
 /// User in guild

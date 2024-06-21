@@ -1,6 +1,6 @@
+using Domain.Entities.Base;
+using Domain.Entities.Logs;
 using Microsoft.EntityFrameworkCore;
-using Services.Entities.Base;
-using Services.Entities.Logs;
 
 namespace Services;
 

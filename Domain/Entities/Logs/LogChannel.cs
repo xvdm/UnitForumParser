@@ -1,6 +1,6 @@
-using Services.Entities.Base;
+using Domain.Entities.Base;
 
-namespace Services.Entities.Logs;
+namespace Domain.Entities.Logs;
 
 /// <summary>
 /// Direct messages or text channel on server
