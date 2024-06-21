@@ -72,8 +72,7 @@ public sealed class LogsRepository
         {
             Id = command.GuildId!.Value,
             Name = socketGuildChannel!.Guild.Name,
-            IconUrl = socketGuildChannel.Guild.IconUrl,
-            ModifiedAt = DateTime.UtcNow
+            IconUrl = socketGuildChannel.Guild.IconUrl
         };
 
         var channelsFromCommand = socketGuildChannel.Guild.Channels
@@ -139,8 +138,7 @@ public sealed class LogsRepository
         {
             Id = command.GuildId!.Value,
             Name = socketGuildChannel!.Guild.Name,
-            IconUrl = socketGuildChannel.Guild.IconUrl,
-            ModifiedAt = DateTime.UtcNow
+            IconUrl = socketGuildChannel.Guild.IconUrl
         };
 
         var channelsFromCommand = socketGuildChannel.Guild.Channels
@@ -265,7 +263,6 @@ public sealed class LogsRepository
 
         guildFromDatabase.Name = guildFromCommand.Name;
         guildFromDatabase.IconUrl = guildFromCommand.IconUrl;
-        guildFromDatabase.ModifiedAt = guildFromCommand.ModifiedAt;
     }
 
     private async Task LogDirectMessageInteraction(ApplicationDbContext context, SocketSlashCommand command)

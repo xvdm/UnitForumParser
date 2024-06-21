@@ -1,6 +1,8 @@
+using Services.Entities.Base;
+
 namespace Services.Entities.Logs;
 
-public sealed class LogCommand
+public sealed class LogCommand : Auditable
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;

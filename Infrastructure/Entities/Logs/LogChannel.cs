@@ -1,9 +1,11 @@
+using Services.Entities.Base;
+
 namespace Services.Entities.Logs;
 
 /// <summary>
 /// Direct messages or text channel on server
 /// </summary>
-public sealed class LogChannel
+public sealed class LogChannel : Auditable
 {
     /// <summary>
     /// Id of the text channel on server or id of direct messages

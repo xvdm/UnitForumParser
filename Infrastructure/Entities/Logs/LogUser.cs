@@ -1,6 +1,8 @@
+using Services.Entities.Base;
+
 namespace Services.Entities.Logs;
 
-public sealed class LogUser
+public sealed class LogUser : Auditable
 {
     public ulong Id { get; set; }
     public string? Username { get; set; }

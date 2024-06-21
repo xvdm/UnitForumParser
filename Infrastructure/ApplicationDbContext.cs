@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Services.Entities.Base;
 using Services.Entities.Logs;
 
 namespace Services;
@@ -24,5 +25,33 @@ public sealed class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ModifyAuditableEntities();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void ModifyAuditableEntities()
+    {
+        var entries = ChangeTracker
+            .Entries()
+            .Where(x => x.State is EntityState.Added or EntityState.Modified);
+
+        var time = DateTime.UtcNow;
+        
+        foreach (var entry in entries)
+        {
+            if (entry.Entity is not Auditable) continue;
+
+            var property = entry.State switch
+            {
+                EntityState.Added => entry.Property(nameof(Auditable.EntityCreatedAt)),
+                _ => entry.Property(nameof(Auditable.EntityModifiedAt)),
+            };
+
+            property.CurrentValue ??= time;
+        }
     }
 }
