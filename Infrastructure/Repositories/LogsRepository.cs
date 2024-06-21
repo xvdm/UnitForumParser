@@ -58,7 +58,7 @@ public sealed class LogsRepository
             await AddNewGuild(context, command);
         }
         // update guild maximum once a day
-        else if (guildFromDatabase.ModifiedAt < DateTime.UtcNow.AddDays(-1))
+        else if (guildFromDatabase.EntityModifiedAt < DateTime.UtcNow.AddDays(-1))
         {
             await UpdateOldGuild(context, command, guildFromDatabase);
         }
