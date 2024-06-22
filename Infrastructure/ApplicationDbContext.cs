@@ -10,6 +10,10 @@ public sealed class ApplicationDbContext : DbContext
     {
     }
     
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+    }
+    
     public DbSet<LogChannel> LogChannels { get; set; }
     public DbSet<LogCommand> LogCommands { get; set; }
     public DbSet<LogCommandOption> LogCommandOptions { get; set; }

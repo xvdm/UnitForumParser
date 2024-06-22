@@ -1,0 +1,110 @@
+@page "/Guilds"
+@using Domain.Entities.Logs
+@inject ApplicationDbContext Database
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Guilds</PageTitle>
+
+<h3>Guilds</h3>
+
+<div class="search-box">
+    <input type="search" autofocus @bind="_searchQuery" @bind:event="onchange" placeholder="Search.." />
+</div>
+
+<div class="page-size-chooser">
+    Items per page:
+    <select @bind="@_pagination.ItemsPerPage">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+    </select>
+</div>
+
+<div>
+    <QuickGrid Items="@FilteredGuilds" Pagination="@_pagination">
+        <TemplateColumn>
+            <div class="flex items-center">
+                <nobr>
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.IconUrl ?? DefaultImage)" alt="-"/>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Id" SortBy="@_sortById">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.Id</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Name" SortBy="@_sortByName">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.Name</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Entity created at" SortBy="@_sortByEntityCreatedAt">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.EntityCreatedAt</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Entity modified at" SortBy="@_sortByEntityModifiedAt">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.EntityModifiedAt</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Actions">
+            <button @onclick="@(() => RedirectToDetails(context.Id))">Details</button>
+        </TemplateColumn>
+    </QuickGrid>
+</div>
+
+<Paginator State="@_pagination" />
+
+
+@code {
+    const string DefaultImage = "https://files.catbox.moe/oaax7n.png";
+    
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 10 };
+    
+    readonly GridSort<LogGuild> _sortById = GridSort<LogGuild>.ByAscending(p => p.Id);
+    readonly GridSort<LogGuild> _sortByName = GridSort<LogGuild>.ByAscending(p => p.Name);
+    readonly GridSort<LogGuild> _sortByEntityCreatedAt = GridSort<LogGuild>.ByAscending(p => p.EntityCreatedAt);
+    readonly GridSort<LogGuild> _sortByEntityModifiedAt = GridSort<LogGuild>.ByAscending(p => p.EntityModifiedAt);
+
+    private string _searchQuery = null!;
+    private IQueryable<LogGuild> _itemsQueryable = null!;
+    IQueryable<LogGuild> FilteredGuilds
+    {
+        get
+        {
+            var result = _itemsQueryable;
+            
+            if (!string.IsNullOrEmpty(_searchQuery))
+            {
+                result = result!.Where(x => 
+                    x.Id.ToString() == _searchQuery ||
+                    x.Name!.ToLower().Contains(_searchQuery.ToLower()));
+            }
+
+            return result;
+        }
+    }
+    
+    protected override void OnInitialized()
+    {
+        _itemsQueryable = Database.LogGuilds.AsQueryable();
+    }
+    
+    void RedirectToDetails(ulong id)
+    {
+        NavigationManager.NavigateTo($"/guilds/details/{id}");
+    }
+}

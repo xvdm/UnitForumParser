@@ -1,0 +1,16 @@
+@page "/guilds/details/{Id:UlongConstraint}"
+
+<PageTitle>Guild details</PageTitle>
+
+<h3>Details @_guildId</h3>
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = null!;
+    private ulong _guildId;
+    
+    protected override void OnInitialized()
+    {
+        _guildId = Convert.ToUInt64(Id);
+    }
+}
