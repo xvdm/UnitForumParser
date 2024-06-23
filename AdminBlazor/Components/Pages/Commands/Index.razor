@@ -1,0 +1,154 @@
+@page "/Commands"
+@using AdminBlazor.Common.Constants
+@using Discord
+@using Domain.Entities.Logs
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Database
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Channels</PageTitle>
+
+<div class="search-box">
+    <input class="search-query" type="search" autofocus @bind="_searchQuery" @bind:event="onchange" placeholder="Search.." />
+</div>
+
+<div>
+    <QuickGrid Items="@FilteredCommands" Pagination="@_pagination">
+        <TemplateColumn Title="Id" SortBy="@_sortById">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.Id</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Name" SortBy="@_sortByName">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.Name</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Entity created at" SortBy="@_sortByEntityCreatedAt">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.EntityCreatedAt</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="User">
+            <div class="flex items-center">
+                <nobr>
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogUser.AvatarUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="User Id" SortBy="@_sortByUserId">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.LogUserId</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Username" SortBy="@_sortByUsername">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.LogUser.Username</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Channel Id" SortBy="@_sortByChannelId">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.LogChannelId</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Guild">
+            <div class="flex items-center">
+                <nobr>
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogChannel.LogGuild?.IconUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Guild Id" SortBy="@_sortByGuildId">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.LogChannel.LogGuildId</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Guild name" SortBy="@_sortByGuildName">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.LogChannel.LogGuild?.Name</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Actions">
+            <button @onclick="@(() => RedirectToDetails(context.Id))">Details</button>
+        </TemplateColumn>
+    </QuickGrid>
+</div>
+
+<Paginator State="@_pagination" />
+
+<div class="page-size-chooser">
+    Items per page:
+    <select @bind="@_pagination.ItemsPerPage">
+        <option>5</option>
+        <option>10</option>
+        <option>25</option>
+    </select>
+</div>
+
+@code {
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 10 };
+    
+    readonly GridSort<LogCommand> _sortById = GridSort<LogCommand>.ByAscending(p => p.Id);
+    readonly GridSort<LogCommand> _sortByName = GridSort<LogCommand>.ByAscending(p => p.Name);
+    readonly GridSort<LogCommand> _sortByEntityCreatedAt = GridSort<LogCommand>.ByAscending(p => p.EntityCreatedAt);
+    readonly GridSort<LogCommand> _sortByUserId = GridSort<LogCommand>.ByAscending(p => p.LogUserId);
+    readonly GridSort<LogCommand> _sortByUsername = GridSort<LogCommand>.ByAscending(p => p.LogUser.Username);
+    readonly GridSort<LogCommand> _sortByChannelId = GridSort<LogCommand>.ByAscending(p => p.LogChannelId);
+    readonly GridSort<LogCommand> _sortByGuildId = GridSort<LogCommand>.ByAscending(p => p.LogChannel.LogGuildId);
+    readonly GridSort<LogCommand> _sortByGuildName = GridSort<LogCommand>.ByAscending(p => p.LogChannel.LogGuild!.Name);
+
+    private string _searchQuery = null!;
+    private IQueryable<LogCommand> _itemsQueryable = null!;
+    IQueryable<LogCommand> FilteredCommands
+    {
+        get
+        {
+            var result = _itemsQueryable;
+            
+            if (!string.IsNullOrEmpty(_searchQuery))
+            {
+                result = result.Where(x => 
+                    x.Id.ToString() == _searchQuery ||
+                    x.Name.ToLower().Contains(_searchQuery.ToLower()) ||
+                    x.LogUserId.ToString() == _searchQuery ||
+                    x.LogUser.Username!.ToLower().Contains(_searchQuery.ToLower()) ||
+                    x.LogChannelId.ToString() == _searchQuery ||
+                    x.LogChannel.LogGuildId.ToString() == _searchQuery ||
+                    x.LogChannel.LogGuild!.Name!.ToLower().Contains(_searchQuery.ToLower()));
+            }
+
+            return result;
+        }
+    }
+    
+    protected override void OnInitialized()
+    {
+        _itemsQueryable = Database.LogCommands
+            .Include(x => x.LogUser)
+            .Include(x => x.LogChannel)
+            .ThenInclude(x => x.LogGuild)
+            .AsQueryable();
+    }
+    
+    void RedirectToDetails(Guid id)
+    {
+        NavigationManager.NavigateTo($"/commands/details/{id}");
+    }
+}
