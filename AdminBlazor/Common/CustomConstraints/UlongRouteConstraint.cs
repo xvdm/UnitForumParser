@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace AdminBlazor.CustomConstraints;
+namespace AdminBlazor.Common.CustomConstraints;
 
 public sealed class UlongRouteConstraint: IRouteConstraint
 {

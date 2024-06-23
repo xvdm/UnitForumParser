@@ -1,4 +1,5 @@
 @page "/Channels"
+@using AdminBlazor.Common.Constants
 @using Discord
 @using Domain.Entities.Logs
 @using Microsoft.EntityFrameworkCore
@@ -52,7 +53,7 @@
         <TemplateColumn Title="Guild">
             <div class="flex items-center">
                 <nobr>
-                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogGuild?.IconUrl ?? DefaultImage)" alt="-"/>
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogGuild?.IconUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
                 </nobr>
             </div>
         </TemplateColumn>
@@ -88,8 +89,6 @@
 </div>
 
 @code {
-    const string DefaultImage = "https://files.catbox.moe/oaax7n.png";
-    
     private readonly PaginationState _pagination = new() { ItemsPerPage = 10 };
     
     readonly GridSort<LogChannel> _sortById = GridSort<LogChannel>.ByAscending(p => p.Id);
