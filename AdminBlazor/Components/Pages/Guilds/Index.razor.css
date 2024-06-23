@@ -12,3 +12,26 @@ button {
 }
 button:hover { background-color: #6884f9; }
 button:active { background-color: #192e86; }
+
+.search-query {
+    font-size: 14px;
+    border-radius: 6px;
+    line-height: 1.5;
+    padding: 0.5em;
+    border: 2px solid #dee1e2;
+    display: block;
+    height: 36px;
+    margin-bottom: 15px;
+}
+
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    font-size: 14px;
+    padding: 0.5em 2em 0.5em 1em;
+    border: 1px solid #dee1e2;
+    border-radius: 6px;
+    cursor: pointer;
+    height: 36px;
+}

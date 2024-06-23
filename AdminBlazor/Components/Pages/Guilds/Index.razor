@@ -6,21 +6,8 @@
 
 <PageTitle>Guilds</PageTitle>
 
-<h3>Guilds</h3>
-
 <div class="search-box">
-    <input type="search" autofocus @bind="_searchQuery" @bind:event="onchange" placeholder="Search.." />
-</div>
-
-<div class="page-size-chooser">
-    Items per page:
-    <select @bind="@_pagination.ItemsPerPage">
-        <option>1</option>
-        <option>5</option>
-        <option>10</option>
-        <option>20</option>
-        <option>50</option>
-    </select>
+    <input class="search-query" type="search" autofocus @bind="_searchQuery" @bind:event="onchange" placeholder="Search.." />
 </div>
 
 <div>
@@ -68,6 +55,14 @@
 
 <Paginator State="@_pagination" />
 
+<div class="page-size-chooser">
+    Items per page:
+    <select @bind="@_pagination.ItemsPerPage">
+        <option>5</option>
+        <option>10</option>
+        <option>25</option>
+    </select>
+</div>
 
 @code {
     const string DefaultImage = "https://files.catbox.moe/oaax7n.png";
