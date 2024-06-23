@@ -262,6 +262,7 @@ public sealed class LogsRepository
 
         guildFromDatabase.Name = guildFromCommand.Name;
         guildFromDatabase.IconUrl = guildFromCommand.IconUrl;
+        guildFromDatabase.EntityModifiedAt = DateTime.UtcNow;
     }
 
     private async Task LogDirectMessageInteraction(ApplicationDbContext context, SocketSlashCommand command)
