@@ -1,0 +1,16 @@
+@page "/channels/details/{Id:UlongConstraint}"
+
+<PageTitle>Channel details</PageTitle>
+
+<h3>Details @_channelId</h3>
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = null!;
+    private ulong _channelId;
+    
+    protected override void OnInitialized()
+    {
+        _channelId = Convert.ToUInt64(Id);
+    }
+}
