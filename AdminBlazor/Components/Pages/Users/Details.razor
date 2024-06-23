@@ -1,0 +1,16 @@
+@page "/users/details/{Id:UlongConstraint}"
+
+<PageTitle>User details</PageTitle>
+
+<h3>Details @_userid</h3>
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = null!;
+    private ulong _userid;
+    
+    protected override void OnInitialized()
+    {
+        _userid = Convert.ToUInt64(Id);
+    }
+}

@@ -1,0 +1,113 @@
+@page "/Users"
+@using AdminBlazor.Common.Constants
+@using Domain.Entities.Logs
+@inject ApplicationDbContext Database
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Users</PageTitle>
+
+<div class="search-box">
+    <input class="search-query" type="search" autofocus @bind="_searchQuery" @bind:event="onchange" placeholder="Search.." />
+</div>
+
+<div>
+    <QuickGrid Items="@FilteredUsers" Pagination="@_pagination">
+        <TemplateColumn>
+            <div class="flex items-center">
+                <nobr>
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.AvatarUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Id" SortBy="@_sortById">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.Id</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Name" SortBy="@_sortByUserName">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.Username</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Name" SortBy="@_sortByGlobalName">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.GlobalName</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Entity created at" SortBy="@_sortByEntityCreatedAt">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.EntityCreatedAt</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Entity modified at" SortBy="@_sortByEntityModifiedAt">
+            <div class="flex items-center">
+                <nobr>
+                    <strong>@context.EntityModifiedAt</strong>
+                </nobr>
+            </div>
+        </TemplateColumn>
+        <TemplateColumn Title="Actions">
+            <button @onclick="@(() => RedirectToDetails(context.Id))">Details</button>
+        </TemplateColumn>
+    </QuickGrid>
+</div>
+
+<Paginator State="@_pagination" />
+
+<div class="page-size-chooser">
+    Items per page:
+    <select @bind="@_pagination.ItemsPerPage">
+        <option>5</option>
+        <option>10</option>
+        <option>25</option>
+    </select>
+</div>
+
+@code {
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 10 };
+    
+    readonly GridSort<LogUser> _sortById = GridSort<LogUser>.ByAscending(p => p.Id);
+    readonly GridSort<LogUser> _sortByUserName = GridSort<LogUser>.ByAscending(p => p.Username);
+    readonly GridSort<LogUser> _sortByGlobalName = GridSort<LogUser>.ByAscending(p => p.GlobalName);
+    readonly GridSort<LogUser> _sortByEntityCreatedAt = GridSort<LogUser>.ByAscending(p => p.EntityCreatedAt);
+    readonly GridSort<LogUser> _sortByEntityModifiedAt = GridSort<LogUser>.ByAscending(p => p.EntityModifiedAt);
+
+    private string _searchQuery = null!;
+    private IQueryable<LogUser> _itemsQueryable = null!;
+    IQueryable<LogUser> FilteredUsers
+    {
+        get
+        {
+            var result = _itemsQueryable;
+            
+            if (!string.IsNullOrEmpty(_searchQuery))
+            {
+                result = result.Where(x => 
+                    x.Id.ToString() == _searchQuery ||
+                    x.Username!.ToLower().Contains(_searchQuery.ToLower()) ||
+                    x.GlobalName!.ToLower().Contains(_searchQuery.ToLower()));
+            }
+
+            return result;
+        }
+    }
+    
+    protected override void OnInitialized()
+    {
+        _itemsQueryable = Database.LogUsers.AsQueryable();
+    }
+    
+    void RedirectToDetails(ulong id)
+    {
+        NavigationManager.NavigateTo($"/users/details/{id}");
+    }
+}
