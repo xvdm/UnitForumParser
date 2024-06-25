@@ -1,10 +1,123 @@
 @page "/commands/details/{Id:guid}"
+@using AdminBlazor.Common.Constants
+@using Discord
+@using Domain.Entities.Logs
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Database
+@attribute [StreamRendering]
 
 <PageTitle>Command details</PageTitle>
 
-<h3>Details @Id</h3>
+@if (_logCommand == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card-container">
+        <div class="card">
+            <div class="card-header">Log Command Details</div>
+            <div class="card-info">
+                <p>
+                    <strong>Id:</strong> @_logCommand.Id
+                </p>
+                <p>
+                    <strong>Name:</strong> @_logCommand.Name
+                </p>
+                <p>
+                    <strong>Entity created at:</strong> @_logCommand.EntityCreatedAt
+                </p>
+                <div class="card">
+                    <div class="card-sub-header">Options</div>
+                    @foreach (var option in _logCommand.LogCommandOptions)
+                    {
+                        <div class="card-info">
+                            <p>
+                                <strong>Id:</strong> @option.Id
+                            </p>
+                            <p>
+                                <strong>Name:</strong> @option.Name
+                            </p>
+                            <p>
+                                <strong>Value:</strong> @option.Value
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(_logCommand.LogUser.AvatarUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                User Details
+            </div>
+            <div class="card-info">
+                <p>
+                    <strong>Id:</strong> @_logCommand.LogUser.Id
+                </p>
+                <p>
+                    <strong>Username:</strong> @_logCommand.LogUser.Username
+                </p>
+                <p>
+                    <strong>Global name:</strong> @_logCommand.LogUser.GlobalName
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Channel Details</div>
+            <div class="card-info">
+                <p>
+                    <strong>Id:</strong> @_logCommand.LogChannel.Id
+                </p>
+                <p>
+                    <strong>Name:</strong> @_logCommand.LogChannel.Name
+                </p>
+                @if (_logCommand.LogChannel.Type is not null)
+                {
+                    <p>
+                        <strong>Type:</strong> @((ChannelType)_logCommand.LogChannel.Type)
+                    </p>
+                }
+            </div>
+        </div>
+
+        @if (_logCommand.LogChannel.LogGuild is not null)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(_logCommand.LogChannel.LogGuild.IconUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                    Guild Details
+                </div>
+                <div class="card-info">
+                    <p>
+                        <strong>Id:</strong> @_logCommand.LogChannel.LogGuild?.Id
+                    </p>
+                    <p>
+                        <strong>Name:</strong> @_logCommand.LogChannel.LogGuild?.Name
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
 
 @code {
-    [Parameter] 
-    public Guid Id { get; set; }
+    [Parameter] public Guid Id { get; set; }
+
+    private LogCommand? _logCommand;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _logCommand = await Database.LogCommands
+            .Where(x => x.Id == Id)
+            .Include(x => x.LogUser)
+            .Include(x => x.LogChannel)
+            .ThenInclude(x => x.LogGuild)
+            .Include(x => x.LogCommandOptions)
+            .FirstOrDefaultAsync();
+    }
 }
+
