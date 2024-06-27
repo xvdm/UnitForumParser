@@ -1,16 +1,85 @@
 @page "/channels/details/{Id:UlongConstraint}"
+@using AdminBlazor.Common.Constants
+@using Discord
+@using Domain.Entities.Logs
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Database
+@attribute [StreamRendering]
 
 <PageTitle>Channel details</PageTitle>
 
-<h3>Details @_channelId</h3>
+@if (_logChannel == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card-container">
+        <div class="card">
+            <div class="card-header">Log Command Details</div>
+            <div class="card-info">
+                <p>
+                    <strong>Id:</strong> @_logChannel.Id
+                </p>
+                <p>
+                    <strong>Name:</strong> @_logChannel.Name
+                </p>
+                <p>
+                    <strong>Entity created at:</strong> @_logChannel.EntityCreatedAt
+                </p>
+                <p>
+                    <strong>Entity modified at:</strong> @_logChannel.EntityModifiedAt
+                </p>
+                <p>
+                    <strong>Is active:</strong> @_logChannel.IsActive
+                </p>
+                @if (_logChannel.Type.HasValue)
+                {
+                    <p>
+                        <strong>Type:</strong> @((ChannelType)_logChannel.Type)
+                    </p>   
+                }
+            </div>
+        </div>
+
+        @if (_logChannel.LogGuild is not null)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(_logChannel.LogGuild.IconUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                    Guild Details
+                </div>
+                <div class="card-info">
+                    <p>
+                        <strong>Id:</strong> @_logChannel.LogGuild?.Id
+                    </p>
+                    <p>
+                        <strong>Name:</strong> @_logChannel.LogGuild?.Name
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
 
 @code {
     [Parameter] 
     public string Id { get; set; } = null!;
     private ulong _channelId;
     
+    private LogChannel? _logChannel;
+    
     protected override void OnInitialized()
     {
         _channelId = Convert.ToUInt64(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _logChannel = await Database.LogChannels
+            .Where(x => x.Id == _channelId)
+            .Include(x => x.LogGuild)
+            .FirstOrDefaultAsync();
     }
 }

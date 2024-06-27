@@ -1,0 +1,69 @@
+/* Reset some basic styles */
+body, h1, h2, h3, h4, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style for the card container */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Style for the card */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    margin: 10px;
+    transition: transform 0.1s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+/* Style for the card header */
+.card-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.card-sub-header {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Style for the card section titles */
+.card-section-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #555;
+}
+
+/* Style for the card content */
+.card-content {
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+/* Style for individual pieces of information */
+.card-info {
+    margin-bottom: 10px;
+}
+
+.card-info strong {
+    color: #333;
+}
