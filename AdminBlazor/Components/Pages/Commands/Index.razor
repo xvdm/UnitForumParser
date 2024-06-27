@@ -10,7 +10,7 @@
 <PageTitle>Channels</PageTitle>
 
 <div class="search-box">
-    <input class="search-query" type="search" autofocus @bind="_searchQuery" @bind:event="onchange" placeholder="Search.." />
+    <input class="search-query" type="search" autofocus @bind="_searchQuery" @bind:event="onchange" placeholder="Search.."/>
 </div>
 
 <div>
@@ -65,12 +65,14 @@
             </div>
         </TemplateColumn>
         <TemplateColumn Title="Actions">
-            <button @onclick="@(() => RedirectToDetails(context.Id))">Details</button>
+            <a class="details-link" href=@($"/commands/details/{context.Id}")>
+                Details
+            </a>
         </TemplateColumn>
     </QuickGrid>
 </div>
 
-<Paginator State="@_pagination" />
+<Paginator State="@_pagination"/>
 
 <div class="page-size-chooser">
     Items per page:
@@ -83,7 +85,7 @@
 
 @code {
     private readonly PaginationState _pagination = new() { ItemsPerPage = 10 };
-    
+
     readonly GridSort<LogCommand> _sortByName = GridSort<LogCommand>.ByAscending(p => p.Name);
     readonly GridSort<LogCommand> _sortByEntityCreatedAt = GridSort<LogCommand>.ByAscending(p => p.EntityCreatedAt);
     readonly GridSort<LogCommand> _sortByUsername = GridSort<LogCommand>.ByAscending(p => p.LogUser.Username);
@@ -92,15 +94,16 @@
 
     private string _searchQuery = null!;
     private IQueryable<LogCommand> _itemsQueryable = null!;
+
     IQueryable<LogCommand> FilteredCommands
     {
         get
         {
             var result = _itemsQueryable;
-            
+
             if (!string.IsNullOrEmpty(_searchQuery))
             {
-                result = result.Where(x => 
+                result = result.Where(x =>
                     x.Id.ToString() == _searchQuery ||
                     x.Name.ToLower().Contains(_searchQuery.ToLower()) ||
                     x.LogUserId.ToString() == _searchQuery ||
@@ -113,7 +116,7 @@
             return result;
         }
     }
-    
+
     protected override void OnInitialized()
     {
         _itemsQueryable = Database.LogCommands
@@ -121,10 +124,5 @@
             .Include(x => x.LogChannel)
             .ThenInclude(x => x.LogGuild)
             .AsQueryable();
-    }
-    
-    void RedirectToDetails(Guid id)
-    {
-        NavigationManager.NavigateTo($"/commands/details/{id}");
     }
 }

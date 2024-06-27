@@ -56,7 +56,9 @@
             </div>
         </TemplateColumn>
         <TemplateColumn Title="Actions">
-            <button @onclick="@(() => RedirectToDetails(context.Id))">Details</button>
+            <a class="details-link" href=@($"/users/details/{context.Id}")>
+                Details
+            </a>
         </TemplateColumn>
     </QuickGrid>
 </div>
@@ -104,10 +106,5 @@
     protected override void OnInitialized()
     {
         _itemsQueryable = Database.LogUsers.AsQueryable();
-    }
-    
-    void RedirectToDetails(ulong id)
-    {
-        NavigationManager.NavigateTo($"/users/details/{id}");
     }
 }

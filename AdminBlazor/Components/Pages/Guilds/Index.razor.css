@@ -35,3 +35,15 @@ select {
     cursor: pointer;
     height: 36px;
 }
+
+.details-link {
+    background: #4969ee;
+    color: white;
+    padding: 0.2rem 1rem;
+    border-radius: 0.25rem;
+    margin: 0.25rem 0.5rem;
+    text-decoration: none;
+    border: 1px solid black;
+}
+.details-link:hover { background-color: #6884f9; }
+.details-link:active { background-color: #192e86; }
