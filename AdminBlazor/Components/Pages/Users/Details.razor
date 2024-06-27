@@ -1,16 +1,97 @@
 @page "/users/details/{Id:UlongConstraint}"
+@using AdminBlazor.Common.Constants
+@using Domain.Entities.Logs
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Database
+@attribute [StreamRendering]
 
 <PageTitle>User details</PageTitle>
 
-<h3>Details @_userid</h3>
+@if (_logUser == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(_logUser.AvatarUrl ?? ViewConstants.DefaultIcon)" alt=""/>
+            Log User Details
+        </div>
+        <div class="card-info">
+            <p>
+                <strong>Id:</strong> @_logUser.Id
+            </p>
+            <p>
+                <strong>Username:</strong> @_logUser.Username
+            </p>
+            <p>
+                <strong>Global name:</strong> @_logUser.GlobalName
+            </p>
+            <p>
+                <strong>Entity created at:</strong> @_logUser.EntityCreatedAt
+            </p>
+            <p>
+                <strong>Entity modified at:</strong> @_logUser.EntityModifiedAt
+            </p>
+        </div>
+    </div>
+    <div class="card-container">
+        @if (_logGuildUsers is not null)
+        {
+            @foreach (var logGuildUser in _logGuildUsers)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(logGuildUser.LogGuild.IconUrl ?? ViewConstants.DefaultIcon)" alt=""/>
+                        Guild Details
+                    </div>
+                    <div class="card-info">
+                        <p>
+                            <strong>Guild Id:</strong> @logGuildUser.LogGuild.Id
+                        </p>
+                        <p>
+                            <strong>Guild Name:</strong> @logGuildUser.LogGuild.Name
+                        </p>
+                        <p>
+                            <strong>User guild nickname:</strong> @logGuildUser.GuildNickname
+                        </p>
+                        @if (logGuildUser.JoinedAt.HasValue)
+                        {
+                            <p>
+                                <strong>User joined guild at:</strong> @(logGuildUser.JoinedAt.Value.UtcDateTime)
+                            </p>   
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+
 
 @code {
-    [Parameter] 
-    public string Id { get; set; } = null!;
-    private ulong _userid;
-    
+    [Parameter] public string Id { get; set; } = null!;
+    private ulong _userId;
+
+    private LogUser? _logUser;
+
+    private List<LogGuildUser>? _logGuildUsers;
+
     protected override void OnInitialized()
     {
-        _userid = Convert.ToUInt64(Id);
+        _userId = Convert.ToUInt64(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _logUser = await Database.LogUsers
+            .Where(x => x.Id == _userId)
+            .FirstOrDefaultAsync();
+
+        _logGuildUsers = await Database.LogGuildUsers
+            .Where(x => x.LogUserId == _userId)
+            .Include(x => x.LogGuild)
+            .ToListAsync();
     }
 }
