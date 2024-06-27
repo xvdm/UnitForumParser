@@ -72,7 +72,9 @@
             </div>
         </TemplateColumn>
         <TemplateColumn Title="Actions">
-            <button @onclick="@(() => RedirectToDetails(context.Id))">Details</button>
+            <a class="details-link" href=@($"/commands/details/{context.Id}")>
+                Details
+            </a>
         </TemplateColumn>
     </QuickGrid>
 </div>
@@ -125,10 +127,5 @@
         _itemsQueryable = Database.LogChannels
             .Include(x => x.LogGuild)
             .AsQueryable();
-    }
-    
-    void RedirectToDetails(ulong id)
-    {
-        NavigationManager.NavigateTo($"/channels/details/{id}");
     }
 }
