@@ -32,7 +32,7 @@
         <TemplateColumn Title="User">
             <div class="flex items-center">
                 <nobr>
-                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogUser.AvatarUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogUser.AvatarUrl ?? ViewConstants.DefaultIcon)" alt=""/>
                 </nobr>
             </div>
         </TemplateColumn>
@@ -53,7 +53,7 @@
         <TemplateColumn Title="Guild">
             <div class="flex items-center">
                 <nobr>
-                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogChannel.LogGuild?.IconUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
+                    <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogChannel.LogGuild?.IconUrl ?? ViewConstants.DefaultIcon)" alt=""/>
                 </nobr>
             </div>
         </TemplateColumn>
