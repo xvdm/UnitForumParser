@@ -16,7 +16,7 @@ else
 {
     <div class="card-container">
         <div class="card">
-            <div class="card-header">Log Command Details</div>
+            <div class="card-header">Command</div>
             <div class="card-info">
                 <p>
                     <strong>Id:</strong> @_logCommand.Id
@@ -27,33 +27,34 @@ else
                 <p>
                     <strong>Entity created at:</strong> @_logCommand.EntityCreatedAt
                 </p>
-                @if (_logCommand.LogCommandOptions.Any())
-                {
-                    <div class="card">
-                        <div class="card-sub-header">Options</div>
-                        @foreach (var option in _logCommand.LogCommandOptions)
-                        {
-                            <div class="card-info">
-                                <p>
-                                    <strong>Id:</strong> @option.Id
-                                </p>
-                                <p>
-                                    <strong>Name:</strong> @option.Name
-                                </p>
-                                <p>
-                                    <strong>Value:</strong> @option.Value
-                                </p>
-                            </div>
-                        }
-                    </div>   
-                }
             </div>
         </div>
 
+        @if (_logCommand.LogCommandOptions.Any())
+        {
+            <div class="card">
+                <div class="card-header">Options</div>
+                @foreach (var option in _logCommand.LogCommandOptions)
+                {
+                    <div class="card-info">
+                        <p>
+                            <strong>Id:</strong> @option.Id
+                        </p>
+                        <p>
+                            <strong>Name:</strong> @option.Name
+                        </p>
+                        <p>
+                            <strong>Value:</strong> @option.Value
+                        </p>
+                    </div>
+                }
+            </div>
+        }
+        
         <div class="card">
             <div class="card-header">
                 <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(_logCommand.LogUser.AvatarUrl ?? ViewConstants.DefaultIcon)" alt=""/>
-                User Details
+                User
             </div>
             <div class="card-info">
                 <p>
@@ -69,7 +70,7 @@ else
         </div>
 
         <div class="card">
-            <div class="card-header">Channel Details</div>
+            <div class="card-header">Channel</div>
             <div class="card-info">
                 <p>
                     <strong>Id:</strong> @_logCommand.LogChannel.Id
@@ -91,7 +92,7 @@ else
             <div class="card">
                 <div class="card-header">
                     <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(_logCommand.LogChannel.LogGuild.IconUrl ?? ViewConstants.DefaultIcon)" alt=""/>
-                    Guild Details
+                    Guild
                 </div>
                 <div class="card-info">
                     <p>
