@@ -15,13 +15,6 @@
 
 <div>
     <QuickGrid Items="@FilteredCommands" Pagination="@_pagination">
-        <TemplateColumn Title="Id" SortBy="@_sortById">
-            <div class="flex items-center">
-                <nobr>
-                    <strong>@context.Id</strong>
-                </nobr>
-            </div>
-        </TemplateColumn>
         <TemplateColumn Title="Name" SortBy="@_sortByName">
             <div class="flex items-center">
                 <nobr>
@@ -43,13 +36,6 @@
                 </nobr>
             </div>
         </TemplateColumn>
-        <TemplateColumn Title="User Id" SortBy="@_sortByUserId">
-            <div class="flex items-center">
-                <nobr>
-                    <strong>@context.LogUserId</strong>
-                </nobr>
-            </div>
-        </TemplateColumn>
         <TemplateColumn Title="Username" SortBy="@_sortByUsername">
             <div class="flex items-center">
                 <nobr>
@@ -68,13 +54,6 @@
             <div class="flex items-center">
                 <nobr>
                     <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogChannel.LogGuild?.IconUrl ?? ViewConstants.DefaultIcon)" alt="-"/>
-                </nobr>
-            </div>
-        </TemplateColumn>
-        <TemplateColumn Title="Guild Id" SortBy="@_sortByGuildId">
-            <div class="flex items-center">
-                <nobr>
-                    <strong>@context.LogChannel.LogGuildId</strong>
                 </nobr>
             </div>
         </TemplateColumn>
@@ -105,13 +84,10 @@
 @code {
     private readonly PaginationState _pagination = new() { ItemsPerPage = 10 };
     
-    readonly GridSort<LogCommand> _sortById = GridSort<LogCommand>.ByAscending(p => p.Id);
     readonly GridSort<LogCommand> _sortByName = GridSort<LogCommand>.ByAscending(p => p.Name);
     readonly GridSort<LogCommand> _sortByEntityCreatedAt = GridSort<LogCommand>.ByAscending(p => p.EntityCreatedAt);
-    readonly GridSort<LogCommand> _sortByUserId = GridSort<LogCommand>.ByAscending(p => p.LogUserId);
     readonly GridSort<LogCommand> _sortByUsername = GridSort<LogCommand>.ByAscending(p => p.LogUser.Username);
     readonly GridSort<LogCommand> _sortByChannelId = GridSort<LogCommand>.ByAscending(p => p.LogChannelId);
-    readonly GridSort<LogCommand> _sortByGuildId = GridSort<LogCommand>.ByAscending(p => p.LogChannel.LogGuildId);
     readonly GridSort<LogCommand> _sortByGuildName = GridSort<LogCommand>.ByAscending(p => p.LogChannel.LogGuild!.Name);
 
     private string _searchQuery = null!;
