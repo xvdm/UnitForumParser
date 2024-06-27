@@ -36,13 +36,6 @@
                 </nobr>
             </div>
         </TemplateColumn>
-        <TemplateColumn Title="Entity modified at" SortBy="@_sortByEntityModifiedAt">
-            <div class="flex items-center">
-                <nobr>
-                    <strong>@context.EntityModifiedAt</strong>
-                </nobr>
-            </div>
-        </TemplateColumn>
         <TemplateColumn Title="Channel type" SortBy="@_sortByType">
             <div class="flex items-center">
                 <nobr>
@@ -96,7 +89,6 @@
     readonly GridSort<LogChannel> _sortById = GridSort<LogChannel>.ByAscending(p => p.Id);
     readonly GridSort<LogChannel> _sortByName = GridSort<LogChannel>.ByAscending(p => p.Name);
     readonly GridSort<LogChannel> _sortByEntityCreatedAt = GridSort<LogChannel>.ByAscending(p => p.EntityCreatedAt);
-    readonly GridSort<LogChannel> _sortByEntityModifiedAt = GridSort<LogChannel>.ByAscending(p => p.EntityModifiedAt);
     readonly GridSort<LogChannel> _sortByType = GridSort<LogChannel>.ByAscending(p => p.Type);
     readonly GridSort<LogChannel> _sortByGuildId = GridSort<LogChannel>.ByAscending(p => p.LogGuildId);
     readonly GridSort<LogChannel> _sortByGuildName = GridSort<LogChannel>.ByAscending(p => p.LogGuild!.Name);
