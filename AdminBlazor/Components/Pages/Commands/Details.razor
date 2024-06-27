@@ -27,23 +27,26 @@ else
                 <p>
                     <strong>Entity created at:</strong> @_logCommand.EntityCreatedAt
                 </p>
-                <div class="card">
-                    <div class="card-sub-header">Options</div>
-                    @foreach (var option in _logCommand.LogCommandOptions)
-                    {
-                        <div class="card-info">
-                            <p>
-                                <strong>Id:</strong> @option.Id
-                            </p>
-                            <p>
-                                <strong>Name:</strong> @option.Name
-                            </p>
-                            <p>
-                                <strong>Value:</strong> @option.Value
-                            </p>
-                        </div>
-                    }
-                </div>
+                @if (_logCommand.LogCommandOptions.Any())
+                {
+                    <div class="card">
+                        <div class="card-sub-header">Options</div>
+                        @foreach (var option in _logCommand.LogCommandOptions)
+                        {
+                            <div class="card-info">
+                                <p>
+                                    <strong>Id:</strong> @option.Id
+                                </p>
+                                <p>
+                                    <strong>Name:</strong> @option.Name
+                                </p>
+                                <p>
+                                    <strong>Value:</strong> @option.Value
+                                </p>
+                            </div>
+                        }
+                    </div>   
+                }
             </div>
         </div>
 
