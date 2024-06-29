@@ -1,0 +1,111 @@
+/* Reset some basic styles */
+body, h1, h2, h3, h4, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style for the card container */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Style for the card */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    margin: 10px;
+    transition: transform 0.1s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+/* Style for the card header */
+.card-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.card-sub-header {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Style for the card section titles */
+.card-section-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #555;
+}
+
+/* Style for the card content */
+.card-content {
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+/* Style for individual pieces of information */
+.card-info {
+    margin-bottom: 10px;
+}
+
+.card-info strong {
+    color: #333;
+}
+
+/* Stripe effect */
+::deep tbody tr { background-color: rgba(0,0,0,0.04); }
+::deep tbody tr:nth-child(even) { background: rgba(255,255,255,0.4); }
+
+/* Button styles*/
+button {
+    background: #4969ee;
+    color: white;
+    padding: 0.2rem 1rem;
+    border-radius: 0.25rem;
+    margin: 0.25rem 0.5rem;
+}
+button:hover { background-color: #6884f9; }
+button:active { background-color: #192e86; }
+
+.search-query {
+    font-size: 14px;
+    border-radius: 6px;
+    line-height: 1.5;
+    padding: 0.5em;
+    border: 2px solid #dee1e2;
+    display: block;
+    height: 36px;
+    margin-bottom: 15px;
+}
+
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    font-size: 14px;
+    padding: 0.5em 2em 0.5em 1em;
+    border: 1px solid #dee1e2;
+    border-radius: 6px;
+    cursor: pointer;
+    height: 36px;
+}
+
+.grid-component {
+    margin-top: 50px;
+}

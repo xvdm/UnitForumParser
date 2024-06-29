@@ -1,0 +1,118 @@
+@using AdminBlazor.Common.Constants
+@using Domain.Entities.Logs
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Database
+@rendermode InteractiveServer
+
+<div>
+    <h3>Guild users</h3>
+    <div class="search-box">
+        <input class="search-query" type="search" autofocus @bind="_guildUsersSearchQuery" @bind:event="onchange" placeholder="Search.."/>
+    </div>
+    <div>
+        <QuickGrid Items="@FilteredGuildUsers" Pagination="@_guildUsersPagination">
+            <TemplateColumn>
+                <div class="flex items-center">
+                    <nobr>
+                        <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(context.LogUser.AvatarUrl ?? ViewConstants.DefaultIcon)" alt=""/>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Id" SortBy="@_sortGuildUserById">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@context.Id</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Guild nickname" SortBy="@_sortGuildUserByGuildNickname">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@context.GuildNickname</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Joined at" SortBy="@_sortGuildUserByJoinedAt">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@(context.JoinedAt.HasValue ? context.JoinedAt.Value.DateTime : "")</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Username" SortBy="@_sortGuildUserByUserName">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@context.LogUser.Username</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Global name" SortBy="@_sortGuildUserByGlobalName">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@context.LogUser.GlobalName</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Actions">
+                <a class="details-link" href=@($"/users/details/{context.LogUserId}")>
+                    Details
+                </a>
+            </TemplateColumn>
+        </QuickGrid>
+    </div>
+    <Paginator State="@_guildUsersPagination"/>
+    <div class="page-size-chooser">
+        Items per page:
+        <select @bind="@_guildUsersPagination.ItemsPerPage">
+            <option>5</option>
+            <option>10</option>
+            <option>25</option>
+        </select>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Id { get; set; } = null!;
+    private ulong _guildId;
+
+    private readonly PaginationState _guildUsersPagination = new() { ItemsPerPage = 10 };
+    
+    private IQueryable<LogGuildUser> _logGuildUsers = null!;
+
+    IQueryable<LogGuildUser> FilteredGuildUsers
+    {
+        get
+        {
+            var result = _logGuildUsers;
+
+            if (!string.IsNullOrEmpty(_guildUsersSearchQuery))
+            {
+                result = result.Where(x =>
+                    x.Id.ToString() == _guildUsersSearchQuery ||
+                    x.GuildNickname!.ToLower().Contains(_guildUsersSearchQuery.ToLower()) ||
+                    x.LogUser.Username!.ToLower().Contains(_guildUsersSearchQuery.ToLower()) ||
+                    x.LogUser.GlobalName!.ToLower().Contains(_guildUsersSearchQuery.ToLower()));
+            }
+
+            return result;
+        }
+    }
+
+    readonly GridSort<LogGuildUser> _sortGuildUserById = GridSort<LogGuildUser>.ByAscending(p => p.Id);
+    readonly GridSort<LogGuildUser> _sortGuildUserByGuildNickname = GridSort<LogGuildUser>.ByAscending(p => p.GuildNickname);
+    readonly GridSort<LogGuildUser> _sortGuildUserByJoinedAt = GridSort<LogGuildUser>.ByAscending(p => p.JoinedAt);
+    readonly GridSort<LogGuildUser> _sortGuildUserByUserName = GridSort<LogGuildUser>.ByAscending(p => p.LogUser.Username);
+    readonly GridSort<LogGuildUser> _sortGuildUserByGlobalName = GridSort<LogGuildUser>.ByAscending(p => p.LogUser.GlobalName);
+
+    private string _guildUsersSearchQuery = null!;
+
+    protected override void OnInitialized()
+    {
+        _guildId = Convert.ToUInt64(Id);
+        
+        _logGuildUsers = Database.LogGuildUsers
+            .Where(x => x.LogGuildId == _guildId)
+            .Include(x => x.LogUser)
+            .AsQueryable();
+    }
+}

@@ -16,7 +16,7 @@ builder.Services.AddRazorComponents()
 var connectionString = builder.Configuration.GetConnectionString("Postgres") 
                        ?? throw new InvalidOperationException("Connection string 'Postgres' was not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Transient);
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 

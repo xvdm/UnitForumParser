@@ -1,16 +1,65 @@
 @page "/guilds/details/{Id:UlongConstraint}"
+@using AdminBlazor.Common.Constants
+@using AdminBlazor.Components.Pages.Guilds.Components
+@using Domain.Entities.Logs
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Database
+@attribute [StreamRendering]
 
 <PageTitle>Guild details</PageTitle>
 
-<h3>Details @_guildId</h3>
+@if (_logGuild == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <img class="w-8 h-6 mr-4" width="50px" height="50px" src="@(_logGuild.IconUrl ?? ViewConstants.DefaultIcon)" alt=""/>
+            Guild
+        </div>
+        <div class="card-info">
+            <p>
+                <strong>Id:</strong> @_logGuild.Id
+            </p>
+            <p>
+                <strong>Name:</strong> @_logGuild.Name
+            </p>
+            <p>
+                <strong>Entity created at:</strong> @_logGuild.EntityCreatedAt
+            </p>
+            <p>
+                <strong>Entity modified at:</strong> @_logGuild.EntityModifiedAt
+            </p>
+        </div>
+    </div>
+    
+    <div class="grid-component">
+        <GuildUsers Id="@Id"></GuildUsers>
+    </div>
+    
+    <div class="grid-component">
+        <Channels Id="@Id"></Channels>
+    </div>
+}
+
 
 @code {
-    [Parameter] 
-    public string Id { get; set; } = null!;
+    [Parameter] public string Id { get; set; } = null!;
     private ulong _guildId;
-    
+
+    private LogGuild? _logGuild;
+
     protected override void OnInitialized()
     {
         _guildId = Convert.ToUInt64(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _logGuild = await Database.LogGuilds
+            .Where(x => x.Id == _guildId)
+            .FirstOrDefaultAsync();
     }
 }

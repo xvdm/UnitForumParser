@@ -1,0 +1,99 @@
+@using Discord
+@using Domain.Entities.Logs
+@inject ApplicationDbContext Database
+@rendermode InteractiveServer
+
+<div>
+    <h3>Channels</h3>
+    <div class="search-box">
+        <input class="search-query" type="search" autofocus @bind="_channelsSearchQuery" @bind:event="onchange" placeholder="Search.."/>
+    </div>
+    <div>
+        <QuickGrid Items="@FilteredChannels" Pagination="@_channelsPagination">
+            <TemplateColumn Title="Id" SortBy="@_sortChannelById">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@context.Id</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Username" SortBy="@_sortChannelByName">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@context.Name</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Is active" SortBy="@_sortChannelByIsActive">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@context.IsActive</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Type" SortBy="@_sortChannelByType">
+                <div class="flex items-center">
+                    <nobr>
+                        <strong>@(context.Type.HasValue ? (ChannelType)context.Type : "")</strong>
+                    </nobr>
+                </div>
+            </TemplateColumn>
+            <TemplateColumn Title="Actions">
+                <a class="details-link" href=@($"/channels/details/{context.Id}")>
+                    Details
+                </a>
+            </TemplateColumn>
+        </QuickGrid>
+    </div>
+    <Paginator State="@_channelsPagination"/>
+    <div class="page-size-chooser">
+        Items per page:
+        <select @bind="@_channelsPagination.ItemsPerPage">
+            <option>5</option>
+            <option>10</option>
+            <option>25</option>
+        </select>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Id { get; set; } = null!;
+    private ulong _guildId;
+
+    private readonly PaginationState _channelsPagination = new() { ItemsPerPage = 10 };
+
+    private IQueryable<LogChannel> _logChannels = null!;
+
+    IQueryable<LogChannel> FilteredChannels
+    {
+        get
+        {
+            var result = _logChannels;
+
+            if (!string.IsNullOrEmpty(_channelsSearchQuery))
+            {
+                result = result.Where(x =>
+                    x.Id.ToString() == _channelsSearchQuery ||
+                    x.Name!.ToLower().Contains(_channelsSearchQuery.ToLower()));
+            }
+
+            return result;
+        }
+    }
+    
+    readonly GridSort<LogChannel> _sortChannelById = GridSort<LogChannel>.ByAscending(p => p.Id);
+    readonly GridSort<LogChannel> _sortChannelByName = GridSort<LogChannel>.ByAscending(p => p.Name);
+    readonly GridSort<LogChannel> _sortChannelByIsActive = GridSort<LogChannel>.ByAscending(p => p.IsActive);
+    readonly GridSort<LogChannel> _sortChannelByType = GridSort<LogChannel>.ByAscending(p => p.Type);
+
+    private string _channelsSearchQuery = null!;
+
+    protected override void OnInitialized()
+    {
+        _guildId = Convert.ToUInt64(Id);
+        
+        _logChannels = Database.LogChannels
+            .Where(x => x.LogGuildId == _guildId)
+            .AsQueryable();
+    }
+}
