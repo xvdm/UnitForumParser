@@ -19,14 +19,15 @@ public class PlayerComplaintParserTests
         yield return 
         [
             "Author Nickname\n" +
-            "Intruder Nickname\n" +
-            "12345\n" +
+            "1122\n" +
+            "Intruder Nickname 12345\n" +
             "Violation Description\n" +
             "01.01.2000\n" +
             "Violation Proofs", 
             new PlayerComplaintParseResult
             {
                 AuthorNickname = "Author Nickname", 
+                AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
                 IntruderStatic = "12345", 
                 ViolationDescription = "Violation Description", 
@@ -37,14 +38,15 @@ public class PlayerComplaintParserTests
         yield return 
         [
             "1. Author Nickname\n" +
-            "2. Intruder Nickname\n" +
-            "3. 12345\n" +
+            "2. 1122\n" +
+            "3. Intruder Nickname 12345\n" +
             "4. Violation Description\n" +
             "5. 01.01.2000\n" +
             "6. Violation Proofs", 
             new PlayerComplaintParseResult
             {
                 AuthorNickname = "Author Nickname", 
+                AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
                 IntruderStatic = "12345", 
                 ViolationDescription = "Violation Description", 
@@ -55,14 +57,15 @@ public class PlayerComplaintParserTests
         yield return 
         [
             "- Author Nickname\n" +
-            "- Intruder Nickname\n" +
-            "- 12345\n" +
+            "- 1122\n" +
+            "- Intruder Nickname 12345\n" +
             "- Violation Description\n" +
             "- 01.01.2000\n" +
             "- Violation Proofs", 
             new PlayerComplaintParseResult
             {
-                AuthorNickname = "Author Nickname", 
+                AuthorNickname = "Author Nickname",
+                AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
                 IntruderStatic = "12345", 
                 ViolationDescription = "Violation Description", 
@@ -73,14 +76,16 @@ public class PlayerComplaintParserTests
         yield return 
         [
             "Ваш нікнейм: Author Nickname\n" +
-            "Нікнейм/ID порушника: Intruder Nickname\n" +
-            "Детальний опис ситуації: 12345\n" +
-            "Дата і час події: Violation Description\n" +
-            "Докази порушення: 01.01.2000\n" +
-            "Тайм-код порушення: Violation Proofs", 
+            "Ваш ID: 1122\n" +
+            "Нікнейм/ID порушника: Intruder Nickname 12345" +
+            "Детальний опис ситуації: Violation Description\n" +
+            "Дата і час події: 01.01.2000\n" +
+            "Докази порушення: Violation Proofs\n" +
+            "Тайм-код порушення: 1:20", 
             new PlayerComplaintParseResult
             {
-                AuthorNickname = "Author Nickname", 
+                AuthorNickname = "Author Nickname",
+                AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
                 IntruderStatic = "12345", 
                 ViolationDescription = "Violation Description", 

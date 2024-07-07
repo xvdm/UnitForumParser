@@ -3,6 +3,7 @@ namespace Services.Parsers.PlayerComplaint;
 public sealed record PlayerComplaintParseResult
 {
     public string? AuthorNickname { get; set; }
+    public string? AuthorId { get; set; }
     public string? IntruderNickname { get; set; }
     public string? IntruderStatic { get; set; }
     public string? ViolationDescription { get; set; }
