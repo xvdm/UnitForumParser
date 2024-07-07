@@ -29,7 +29,7 @@ public class PlayerComplaintParserTests
                 AuthorNickname = "Author Nickname", 
                 AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
-                IntruderId = "12345", 
+                IntruderIds =  ["12345"], 
                 ViolationDescription = "Violation Description", 
                 ViolationDateTime = "01.01.2000",
                 ViolationProofs = "Violation Proofs"
@@ -48,7 +48,7 @@ public class PlayerComplaintParserTests
                 AuthorNickname = "Author Nickname", 
                 AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
-                IntruderId = "12345", 
+                IntruderIds = ["12345"], 
                 ViolationDescription = "Violation Description", 
                 ViolationDateTime = "01.01.2000",
                 ViolationProofs = "Violation Proofs"
@@ -67,7 +67,7 @@ public class PlayerComplaintParserTests
                 AuthorNickname = "Author Nickname",
                 AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
-                IntruderId = "12345", 
+                IntruderIds = ["12345"], 
                 ViolationDescription = "Violation Description", 
                 ViolationDateTime = "01.01.2000",
                 ViolationProofs = "Violation Proofs"
@@ -87,7 +87,7 @@ public class PlayerComplaintParserTests
                 AuthorNickname = "Author Nickname",
                 AuthorId = "1122",
                 IntruderNickname = "Intruder Nickname", 
-                IntruderId = "12345", 
+                IntruderIds = ["12345"], 
                 ViolationDescription = "Violation Description", 
                 ViolationDateTime = "01.01.2000",
                 ViolationProofs = "Violation Proofs"
